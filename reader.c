@@ -30,21 +30,17 @@ char* return_substring(char* s){
 
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
-        /* ignore all of these characters */
         return makelist(s + 1);
     } else if (s[0] == ')') {
-        /* you made it to the end of the list */
         return &nil;
     } else if (s[0] == '(') {
-        union value input;
-        input.list = makelist(s + 1);
+        union value input = { .list = makelist(s + 1) };
         return makecell( LIST, input, makelist(s + count_list_length(s)));
     } else if (s[0] == '\0') {
         /* you made it to the end of the input */
         return &nil;
     } else {
-        union value input;
-        input.label = return_substring(s);
+        union value input = { .label = return_substring(s) };
         return makecell( LABEL, input, makelist(s + count_substring_length(s)));
     }
 }
