@@ -19,7 +19,7 @@ void debuglistinner(cell* l, int depth) {
         debuglistinner(l->next, depth);
     } else if (l->type == LABEL) {
         printtabs(depth);
-        printf("ATOM: addr:%p, value=%s, next_item=%p  \n", l, l->value.label, l->next);
+        printf("LABEL: addr:%p, value=%s, next_item=%p  \n", l, l->value.label, l->next);
         debuglistinner(l->next, depth++);
     }
 }
