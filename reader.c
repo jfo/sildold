@@ -30,32 +30,23 @@ char* return_substring(char* s){
 
 cell* makelist();
 
-cell *quote_wrapper(cell* c, char* s) {
-    union value quote_value = { .label = "quote" };
-    cell *quote = makecell( LABEL, quote_value, c);
-    union value output_value = { .list = quote };
-    return makecell( LIST, output_value, makelist(s + count_list_length(s + 1) + 3));
+cell *quote_wrapper(char* s, cell* c) {
+    int offset = ((c->type == LIST) ? count_list_length(s + 1) : count_substring_length(s));
+    cell *quote = makecell(LABEL, (union value){.label="quote"}, c);
+    return makecell(LIST, (union value){.list = quote}, makelist(s + offset));
 }
 
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
     } else if (s[0] == '\'' && s[1] == '(') {
-        union value list_value = { .list =  makelist(s+2) };
-        cell *list = makecell( LIST, list_value, &nil);
-        return quote_wrapper(list, s);
+        return quote_wrapper(s, makecell(LIST, (union value){.list=makelist(s+2)}, &nil));
     } else if (s[0] == '\'') {
-        union value label_value = { .label =  return_substring(s+1) };
-        cell *label = makecell( LABEL, label_value, &nil);
-        return quote_wrapper(label, s);
-    } else if (s[0] == ')') {
+        return quote_wrapper(s, makecell(LABEL, (union value){.label=return_substring(s+1)}, &nil));
+    } else if (s[0] == ')' || s[0] == '\0') {
         return &nil;
     } else if (s[0] == '(') {
-        union value input = { .list = makelist(s + 1) };
-        return makecell( LIST, input, makelist(s + count_list_length(s)));
-    } else if (s[0] == '\0') {
-        /* you made it to the end of the input */
-        return &nil;
+        return makecell( LIST, (union value){.list=makelist(s+1)}, makelist(s + count_list_length(s)));
     } else {
         union value input = { .label = return_substring(s) };
         return makecell( LABEL, input, makelist(s + count_substring_length(s)));
