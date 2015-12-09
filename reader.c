@@ -36,6 +36,10 @@ cell *quote_wrapper(char* s, cell* c) {
     return makecell(LIST, (value){.list = quote}, makelist(s + offset));
 }
 
+/* TODO: implement constant time reader function that needn't count string and list lengths
+* probably by passing a pointer to a pointer and incrementing in place?
+* Will allow me to get rid of the redundant iterations from counting functions above.
+*/
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
