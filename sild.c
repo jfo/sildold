@@ -6,6 +6,6 @@
 #include "debugging.c"
 
 int main() {
-    debuglist(makelist("'hi"));
+    debuglist(makelist("'(hi 'hi )"));
     return 0;
 }

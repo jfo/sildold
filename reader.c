@@ -28,41 +28,26 @@ char* return_substring(char* s){
     return out;
 }
 
+cell* makelist();
+
+cell *quote_wrapper(cell* c, char* s) {
+    union value quote_value = { .label = "quote" };
+    cell *quote = makecell( LABEL, quote_value, c);
+    union value output_value = { .list = quote };
+    return makecell( LIST, output_value, makelist(s + count_list_length(s + 1) + 3));
+}
+
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
     } else if (s[0] == '\'' && s[1] == '(') {
-        cell* quote = malloc(sizeof(cell));
-        quote->type = LABEL;
-        quote->value.label = "quote";
-
-        cell* input = malloc(sizeof(cell));
-        input->type = LIST;
-        input->value.list = makelist(s+2);
-        input->next = &nil;
-
-        cell* output = malloc(sizeof(cell));
-        output->type = LIST;
-        output->value.list = quote;
-        quote->next = input;
-        output->next = makelist(s + count_list_length(s + 1) + 2);
-        return output;
+        union value list_value = { .list =  makelist(s+2) };
+        cell *list = makecell( LIST, list_value, &nil);
+        return quote_wrapper(list, s);
     } else if (s[0] == '\'') {
-        cell* quote = malloc(sizeof(cell));
-        quote->type = LABEL;
-        quote->value.label = "quote";
-
-        cell* input = malloc(sizeof(cell));
-        input->type = LABEL;
-        input->value.label = return_substring(s+1);
-        input->next = &nil;
-
-        cell* output = malloc(sizeof(cell));
-        output->type = LIST;
-        output->value.list = quote;
-        quote->next = input;
-        output->next = makelist(s + count_substring_length(s));
-        return output;
+        union value label_value = { .label =  return_substring(s+1) };
+        cell *label = makecell( LABEL, label_value, &nil);
+        return quote_wrapper(label, s);
     } else if (s[0] == ')') {
         return &nil;
     } else if (s[0] == '(') {
