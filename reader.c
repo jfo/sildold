@@ -31,6 +31,38 @@ char* return_substring(char* s){
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
+    } else if (s[0] == '\'' && s[1] == '(') {
+        cell* quote = malloc(sizeof(cell));
+        quote->type = LABEL;
+        quote->value.label = "quote";
+
+        cell* input = malloc(sizeof(cell));
+        input->type = LIST;
+        input->value.list = makelist(s+2);
+        input->next = &nil;
+
+        cell* output = malloc(sizeof(cell));
+        output->type = LIST;
+        output->value.list = quote;
+        quote->next = input;
+        output->next = makelist(s + count_list_length(s + 1) + 2);
+        return output;
+    } else if (s[0] == '\'') {
+        cell* quote = malloc(sizeof(cell));
+        quote->type = LABEL;
+        quote->value.label = "quote";
+
+        cell* input = malloc(sizeof(cell));
+        input->type = LABEL;
+        input->value.label = return_substring(s+1);
+        input->next = &nil;
+
+        cell* output = malloc(sizeof(cell));
+        output->type = LIST;
+        output->value.list = quote;
+        quote->next = input;
+        output->next = makelist(s + count_substring_length(s));
+        return output;
     } else if (s[0] == ')') {
         return &nil;
     } else if (s[0] == '(') {
