@@ -6,6 +6,9 @@
 #include "debugging.c"
 
 int main() {
-    debuglist(makelist("'(hi 'hi )"));
+    debuglist(makelist("'(jdsio '1)"));
+    debuglist(makelist("'(thing)"));
+    debuglist(makelist("'hi"));
+    debuglist(makelist("('hi)"));
     return 0;
 }

@@ -48,7 +48,6 @@ cell * makelist(char* s) {
     } else if (s[0] == '(') {
         return makecell( LIST, (union value){.list=makelist(s+1)}, makelist(s + count_list_length(s)));
     } else {
-        union value input = { .label = return_substring(s) };
-        return makecell( LABEL, input, makelist(s + count_substring_length(s)));
+        return makecell( LABEL, (union value){.label=return_substring(s)}, makelist(s + count_substring_length(s)));
     }
 }
