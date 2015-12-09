@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,7 +16,7 @@ struct cell {
 
 typedef struct cell cell;
 
-cell nil = { NIL, { "#f" }, 0x0 };
+cell nil = { NIL, { 0x0 }, 0x0 };
 cell truth = { LABEL, {"#t"}, &nil };
 
 cell* makecell(int type, union value val, cell * next) {
