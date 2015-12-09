@@ -32,22 +32,22 @@ cell* makelist();
 
 cell *quote_wrapper(char* s, cell* c) {
     int offset = ((c->type == LIST) ? count_list_length(s + 1) : count_substring_length(s));
-    cell *quote = makecell(LABEL, (union value){.label="quote"}, c);
-    return makecell(LIST, (union value){.list = quote}, makelist(s + offset));
+    cell *quote = makecell(LABEL, (value){.label="quote"}, c);
+    return makecell(LIST, (value){.list = quote}, makelist(s + offset));
 }
 
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
     } else if (s[0] == '\'' && s[1] == '(') {
-        return quote_wrapper(s, makecell(LIST, (union value){.list=makelist(s+2)}, &nil));
+        return quote_wrapper(s, makecell(LIST, (value){.list=makelist(s+2)}, &nil));
     } else if (s[0] == '\'') {
-        return quote_wrapper(s, makecell(LABEL, (union value){.label=return_substring(s+1)}, &nil));
+        return quote_wrapper(s, makecell(LABEL, (value){.label=return_substring(s+1)}, &nil));
     } else if (s[0] == ')' || s[0] == '\0') {
         return &nil;
     } else if (s[0] == '(') {
-        return makecell( LIST, (union value){.list=makelist(s+1)}, makelist(s + count_list_length(s)));
+        return makecell( LIST, (value){.list=makelist(s+1)}, makelist(s + count_list_length(s)));
     } else {
-        return makecell( LABEL, (union value){.label=return_substring(s)}, makelist(s + count_substring_length(s)));
+        return makecell( LABEL, (value){.label=return_substring(s)}, makelist(s + count_substring_length(s)));
     }
 }

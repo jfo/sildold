@@ -3,10 +3,10 @@
 
 enum { NIL, LABEL, LIST };
 
-union value {
+typedef union value {
     char * label;
     struct cell * list;
-};
+} value;
 
 typedef struct cell {
     int type;
@@ -17,7 +17,7 @@ typedef struct cell {
 cell nil = { NIL, { 0x0 }, 0x0 };
 cell truth = { LABEL, {"#t"}, &nil };
 
-cell* makecell(int type, union value val, cell * next) {
+cell* makecell(int type, value val, cell * next) {
     cell* output = malloc(sizeof(cell));
     output->type = type;
     output->value = val;
