@@ -25,14 +25,15 @@ void debuglistinner(cell* l, int depth) {
 }
 
 void printlist(cell* l) {
-    if (l == &nil) {
-        printf(")");
-    } else if (l->type == LIST) {
+    if (l->type == LIST) {
         printf("(");
         printlist(l->value.list);
         printlist(l->next);
     } else if (l->type == LABEL) {
         printf(" %s ", l->value.label);
+        if (l->next == &nil) {
+            printf(")");
+        }
         printlist(l->next);
     }
 }

@@ -12,6 +12,7 @@ int main() {
     /* debuglist(makelist("('hi)")); */
 
     debuglist(makelist("'''''hi"));
+    printlist(makelist("a()djs() (dsjfio sdjo))"));
 
     /* char* t = "( cond (( eq ( quote  1 )( quote  2 ))( quote  first ))(( eq ( quote  1 )( quote  2 ))( quote  second )))"; */
     /* printf("%s\n", t); */
