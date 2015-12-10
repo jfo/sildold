@@ -43,7 +43,7 @@ cell *quote_wrapper(char* s, cell* c) {
 cell * makelist(char* s) {
     if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
         return makelist(s + 1);
-    } else if (s[0] == '\'' && s[1] == '(') {
+    } else if ((s[0] == '\'' && s[1] == '(') ||(s[0] == '\'' && s[1] == '\''))  {
         return quote_wrapper(s, makecell(LIST, (value){.list=makelist(s+2)}, &nil));
     } else if (s[0] == '\'') {
         return quote_wrapper(s, makecell(LABEL, (value){.label=return_substring(s+1)}, &nil));
