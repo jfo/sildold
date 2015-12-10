@@ -5,40 +5,33 @@
 #include "reader.c"
 #include "debugging.c"
 
+cell* copy(cell* c) {
+    if (c->type == LIST) {
+        return makecell( LIST, (value){.list=copy(c->value.list)}, copy(c->next));
+    } else if (c->type == LABEL) {
+        return makecell( LABEL, (value){.label=c->value.label}, copy(c->next));
+    } else {
+        return &nil;
+    }
+        return &nil;
+}
+
+cell* eval(cell *c) {
+    if (c->type == LIST) {
+        eval(c->value.list);
+        eval(c->next);
+    } else if (c->type == LABEL) {
+        return &nil;
+    }
+        return &nil;
+}
+
+/* cell* apply(cell *c){ */
+/* } */
+
 int main() {
-    /* debuglist(makelist("'(jdsio '1)")); */
-    /* debuglist(makelist("'(thing)")); */
-    /* debuglist(makelist("'hi")); */
-    /* debuglist(makelist("('hi)")); */
-
-    char *thing = "(this is a test)";
-
-    char **pointer_to_thing = &thing;
-
-    /* debuglist(makelist(thing)); */
-    /* debuglist(makelist(*pointer_to_thing)); */
-
-    /* printf("%c\n", ***pointer_to_thing); */
-    printf("%c\n", **pointer_to_thing);
-    printf("\n");
-
-    printf("%s\n", *pointer_to_thing);
-
-    *pointer_to_thing += 1;
-
-    printf("%s\n", *pointer_to_thing);
-    printf("%p\n", *pointer_to_thing);
-    printf("\n");
-
-    printf("%p\n", pointer_to_thing);
-    printf("%p\n", &pointer_to_thing);
-    printf("\n");
-
-
-    /* char* t = "( cond (( eq ( quote  1 )( quote  2 ))( quote  first ))(( eq ( quote  1 )( quote  2 ))( quote  second )))"; */
-    /* printf("%s\n", t); */
-    /* printlist(makelist(t)); */
-    /* debuglist(makelist(t)); */
-    /* printlist(makelist(t)); */
+    cell* list = makelist("(hello 'world)");
+    debuglist(list);
+    debuglist(copy(list));
     return 0;
 }
