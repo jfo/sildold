@@ -30,7 +30,7 @@ entry *delete_entry(char *label, entry *dict) {
         free(dict);
         return dict->next;
     }
-    dict->next = delete_entry(label, dict->next);
+    if (dict->next != NULL) { dict->next = delete_entry(label, dict->next); }
     return dict;
 }
 
@@ -54,8 +54,17 @@ int main() {
     printf("%s\n", read_entry("third", fourth));
     printf("%s\n", read_entry("fourth", fourth));
     printf("%s\n", read_entry("not a value", fourth));
+    printf("\n");
 
     delete_entry("second", fourth);
+    delete_entry("second", fourth);
+    delete_entry("second", fourth);
+    printf("%s\n", read_entry("first", fourth));
+    printf("%s\n", read_entry("second", fourth));
+    printf("%s\n", read_entry("third", fourth));
+    printf("%s\n", read_entry("fourth", fourth));
+    printf("%s\n", read_entry("not a real value", fourth));
+    printf("\n");
 
     return 0;
 }

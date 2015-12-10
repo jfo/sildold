@@ -11,8 +11,29 @@ int main() {
     /* debuglist(makelist("'hi")); */
     /* debuglist(makelist("('hi)")); */
 
-    debuglist(makelist("'''''hi"));
-    printlist(makelist("a()djs() (dsjfio sdjo))"));
+    char *thing = "(this is a test)";
+
+    char **pointer_to_thing = &thing;
+
+    /* debuglist(makelist(thing)); */
+    /* debuglist(makelist(*pointer_to_thing)); */
+
+    /* printf("%c\n", ***pointer_to_thing); */
+    printf("%c\n", **pointer_to_thing);
+    printf("\n");
+
+    printf("%s\n", *pointer_to_thing);
+
+    *pointer_to_thing += 1;
+
+    printf("%s\n", *pointer_to_thing);
+    printf("%p\n", *pointer_to_thing);
+    printf("\n");
+
+    printf("%p\n", pointer_to_thing);
+    printf("%p\n", &pointer_to_thing);
+    printf("\n");
+
 
     /* char* t = "( cond (( eq ( quote  1 )( quote  2 ))( quote  first ))(( eq ( quote  1 )( quote  2 ))( quote  second )))"; */
     /* printf("%s\n", t); */
