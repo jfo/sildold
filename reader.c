@@ -41,10 +41,12 @@ cell *quote_wrapper(char* s, cell* c) {
 * Will allow me to get rid of the redundant iterations from counting functions above.
 */
 cell * makelist(char* s) {
-    if (s[0] == ' ' || s[0] == '\n' || s[0] == ',') {
+    if ((s[0] == ' ' || s[0] == '\n' || s[0] == ',') || (s[0] == '\'' && (s[1] == ' ' || s[1] == ','))) {
         return makelist(s + 1);
-    } else if ((s[0] == '\'' && s[1] == '(') ||(s[0] == '\'' && s[1] == '\''))  {
+    } else if ((s[0] == '\'' && s[1] == '('))  {
         return quote_wrapper(s, makecell(LIST, (value){.list=makelist(s+2)}, &nil));
+    } else if (s[0] == '\'' && s[1] == '\'')  {
+        return quote_wrapper(s, makelist(s+1));
     } else if (s[0] == '\'') {
         return quote_wrapper(s, makecell(LABEL, (value){.label=return_substring(s+1)}, &nil));
     } else if (s[0] == ')' || s[0] == '\0') {

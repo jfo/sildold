@@ -11,7 +11,7 @@ int main() {
     /* debuglist(makelist("'hi")); */
     /* debuglist(makelist("('hi)")); */
 
-    debuglist(makelist("'''''''''''''''''''''''''''''''''''hi)"));
+    debuglist(makelist("'''''hi"));
 
     /* char* t = "( cond (( eq ( quote  1 )( quote  2 ))( quote  first ))(( eq ( quote  1 )( quote  2 ))( quote  second )))"; */
     /* printf("%s\n", t); */
