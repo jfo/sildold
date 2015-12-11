@@ -4,34 +4,29 @@
 #include "cell.c"
 #include "reader.c"
 #include "debugging.c"
+#include "environments.c"
 
-cell* copy(cell* c) {
+cell* eval(cell *c, env *e) {
     if (c->type == LIST) {
-        return makecell( LIST, (value){.list=copy(c->value.list)}, copy(c->next));
+        c->value.list = eval(c->value.list, e);
+        c->next = eval(c->next, e);
+        return c;
     } else if (c->type == LABEL) {
-        return makecell( LABEL, (value){.label=c->value.label}, copy(c->next));
-    } else {
-        return &nil;
+        if (read_entry(c->value.label, e)) {
+            c->value.label = read_entry(c->value.label, e);
+        }
+        c->next = eval(c->next, e);
+        return c;
     }
-        return &nil;
-}
-
-cell* eval(cell *c) {
-    if (c->type == LIST) {
-        eval(c->value.list);
-        eval(c->next);
-    } else if (c->type == LABEL) {
-        return &nil;
-    }
-        return &nil;
+    return c;
 }
 
 /* cell* apply(cell *c){ */
 /* } */
 
 int main() {
-    cell* list = makelist("(hello 'world)");
-    debuglist(list);
-    debuglist(copy(list));
+    cell* list = makelist("(hello hello hello)");
+    env env = {"hello", "hi", NULL};
+    debuglist(eval(copycell(list), &env));
     return 0;
 }

@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct entry {
+typedef struct env {
     char *label;
     char *value;
-    struct entry *next;
-} entry;
+    struct env *next;
+} env;
 
-entry *create_entry(char *label, char *value, entry *dict) {
-    entry *out = malloc(sizeof(entry));
+env *create_entry(char *label, char *value, env *dict) {
+    env *out = malloc(sizeof(env));
     out->label = label;
     out->value = value;
     out->next = dict;
     return out;
 }
 
-char *read_entry(char *label, entry *dict) {
+char *read_entry(char *label, env *dict) {
     if (strcmp(label, dict->label) == 0) {
         return dict->value;
     } else if (dict->next) {
@@ -25,15 +25,11 @@ char *read_entry(char *label, entry *dict) {
     return NULL;
 }
 
-entry *delete_entry(char *label, entry *dict) {
+env *delete_entry(char *label, env *dict) {
     if (strcmp(label, dict->label) == 0) {
         free(dict);
         return dict->next;
     }
     if (dict->next != NULL) { dict->next = delete_entry(label, dict->next); }
     return dict;
-}
-
-int main() {
-    return 0;
 }
