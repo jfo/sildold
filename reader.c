@@ -31,7 +31,7 @@ char* return_substring(char* s){
 cell* makelist();
 
 cell *quote_wrapper(char* s, cell* c) {
-    int offset = ((c->type == LIST) ? count_list_length(s + 1) : count_substring_length(s));
+    int offset = ((c->type == LIST) ? count_list_length(s + 1) + 1 : count_substring_length(s));
     cell *quote = makecell(LABEL, (value){.label="quote"}, c);
     return makecell(LIST, (value){.list = quote}, makelist(s + offset));
 }

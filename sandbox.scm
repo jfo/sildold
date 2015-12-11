@@ -1,3 +1,3 @@
 (display
-  ( 1)
+  (atom?)
 )

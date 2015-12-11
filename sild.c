@@ -15,6 +15,50 @@ cell* quote(cell* operand) {
     }
 }
 
+cell* atom(cell* operand) {
+    if (
+            (operand->type != LIST && operand->next == &nil)
+            ||
+            (operand->type == LIST && operand->value.list == &nil)
+       ){
+        return &truth;
+    } else {
+        return &nil;
+    }
+}
+
+cell* eq(cell* operand) {
+    cell* first = operand;
+    cell* second = operand->next;
+
+    if (
+            (first->type == LIST && first->value.list == &nil)
+            &&
+            (second->type == LIST && second->value.list == &nil)
+            &&
+            operand->next->next == &nil
+       )
+    {
+        return &truth;
+    } else if (
+            first->type != LIST
+            &&
+            second->type != LIST
+            &&
+            strcmp(first->value.label, second->value.label) == 0
+            &&
+            operand->next->next == &nil
+            )
+    {
+        return &truth;
+    } else if (operand->next->next != &nil) {
+        printf("'eq' accepts only two arguments.\n");
+        exit(1);
+    } else {
+        return &nil;
+    }
+}
+
 cell* eval(cell *c, env *e) {
     if (c->type == LIST && strcmp(c->value.list->value.label, "quote") == 0) {
         cell *r = quote(c->value.list->next);
@@ -35,25 +79,30 @@ cell* eval(cell *c, env *e) {
     return c;
 }
 
-/* cell* apply(cell *c){ */
-/*     cell* operator = c->value.list; */
-/*     cell* first_operand = c->value.list->next; */
+cell* apply(cell *c){
+    cell* operator = c->value.list;
+    cell* first_operand = c->value.list->next;
 
-/*     if (strcmp(operator->value.label, "quote") == 0) { */
-/*         return quote(first_operand); */
-/*     } else if (strcmp(operator->value.label, "atom") == 0) { */
-/*         /1* return atom(first_operand); *1/ */
-/*     } */
-/* } */
+    if (strcmp(operator->value.label, "quote") == 0) {
+        return quote(first_operand);
+    } else if (strcmp(operator->value.label, "atom") == 0) {
+        return atom(first_operand);
+    } else if (strcmp(operator->value.label, "eq") == 0) {
+        return eq(first_operand);
+    }
+    return &nil;
+}
+
+cell* evalapply(cell *form, env *e) {
+    return apply(eval(form, e));
+}
 
 int main() {
     env env = {"hello", "hi", NULL};
 
-    cell* list = makelist("(hello ''hello)");
+    cell* list = makelist("(eq hello hi)");
     debuglist(list);
-    debuglist(eval(copycell(list), &env));
-    printlist(list);
-    printf("\n");
-    printlist(eval(copycell(list), &env));
+
+    debuglist(evalapply(list, &env));
     return 0;
 }
