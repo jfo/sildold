@@ -6,11 +6,12 @@
 #include "debugging.c"
 #include "environments.c"
 
+cell* evalapply(cell *);
 cell* quote(cell* operand) {
     if (operand->next == &nil) {
         return copycell(operand);
     } else {
-        printf("'quote' accepts only one argument.\n\n");
+        printf("'quote' accepts only one argument.\n");
         exit(1);
     }
 }
@@ -59,21 +60,21 @@ cell* eq(cell* operand) {
     }
 }
 
-cell* eval(cell *c, env *e) {
+cell* eval(cell *c) {
     if (c->type == LIST && strcmp(c->value.list->value.label, "quote") == 0) {
         cell *r = quote(c->value.list->next);
-        r->next = eval(c->next, e);
+        r->next = eval(c->next);
         c = r;
         return c;
     } else if (c->type == LIST) {
-        c->value.list = eval(c->value.list, e);
-        c->next = eval(c->next, e);
+        c->value.list = eval(c->value.list);
+        c->next = eval(c->next);
         return c;
     } else if (c->type == LABEL) {
-        if (read_entry(c->value.label, e)) {
-            c->value.label = read_entry(c->value.label, e);
-        }
-        c->next = eval(c->next, e);
+        /* if (read_entry(c->value.label)) { */
+            /* c->value.label = read_entry(c->value.label); */
+        /* } */
+        c->next = eval(c->next);
         return c;
     }
     return c;
@@ -89,20 +90,21 @@ cell* apply(cell *c){
         return atom(first_operand);
     } else if (strcmp(operator->value.label, "eq") == 0) {
         return eq(first_operand);
+    } else {
+        printf("Attempted to apply non-procedure: \"%s\"", operator->value.label);
+        exit(1);
     }
-    return &nil;
 }
 
-cell* evalapply(cell *form, env *e) {
-    return apply(eval(form, e));
+cell* evalapply(cell *form) {
+    return apply(eval(form));
 }
 
 int main() {
-    env env = {"hello", "hi", NULL};
 
-    cell* list = makelist("(eq hello hi)");
+    cell* list = makelist("''hi");
     debuglist(list);
-
-    debuglist(evalapply(list, &env));
+    /* debuglist(eval(list)); */
+    /* debuglist(apply(list)); */
     return 0;
 }
