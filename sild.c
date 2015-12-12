@@ -7,8 +7,8 @@
 
 int main() {
 
-    char* test = "hi '(mom)";
-    cell* list = makelist(&test);
+    char* test = "'hi hi";
+    cell* list = read(&test);
     debuglist(list);
 
     return 0;
