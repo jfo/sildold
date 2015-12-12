@@ -6,12 +6,16 @@
 #include "debugging.c"
 
 int main() {
-    /* debuglist(makelist("'(jdsio '1)")); */
-    /* debuglist(makelist("'(thing)")); */
-    /* debuglist(makelist("'hi")); */
-    /* debuglist(makelist("('hi)")); */
+    debuglist(makelist("'(jdsio '1)"));
+    debuglist(makelist("'(thing)"));
+    debuglist(makelist("'hi"));
+    debuglist(makelist("('hi)"));
 
-    debuglist(makelist("'''''hi"));
+    debuglist(makelist("('hi)"));
+    debuglist(makelist("('hi 'hi)"));
+    debuglist(makelist("'hi 'hi"));
+    debuglist(makelist("'(hi) 'hi"));
+    /* debuglist(makelist("('(hi) 'hi)")); */
 
     /* char* t = "( cond (( eq ( quote  1 )( quote  2 ))( quote  first ))(( eq ( quote  1 )( quote  2 ))( quote  second )))"; */
     /* printf("%s\n", t); */
