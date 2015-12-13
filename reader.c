@@ -19,11 +19,13 @@ cell * read_next(char** s, int depth) {
         return makecell(LIST, (value){.list = quote}, next);
     } else if (*s[0] == '(') {
         *s += 1;
-        cell* listval = read_next(s, depth++);
-        *s += 1;
-        return makecell(LIST, (value){.list=listval}, &nil);
+        cell* listval = read_next(s, depth + 1);
+        cell* next = ((depth > 0) ? read_next(s, depth) : &nil);
+        return makecell(LIST, (value){.list=listval}, next);
     } else if (*s[0] == ')') {
-        if (s[1] == '\0') { *s += 1; };
+        *s += 1;
+        return &nil;
+    } else if (*s[0] == '\0') {
         return &nil;
     } else {
         char* out = malloc(count_substring_length(*s));
@@ -53,7 +55,7 @@ cell * read(char** s) {
         return &nil;
     } else {
         cell* out = read_next(s,0);
-        out->next = read(s);
+        out->next = read_next(s, 0);
         return out;
     }
 }
