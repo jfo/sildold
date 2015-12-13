@@ -7,9 +7,7 @@
 
 int main() {
 
-    /* char* test = "(hi (hi)) hi"; */
-    char* test = "'(hi) 'hi";
-    /* cell* list = read(&test); */
+    char* test = "'() hi mom ()";
     cell* list = read(&test);
     debuglist(list);
 
