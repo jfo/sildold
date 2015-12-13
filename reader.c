@@ -35,6 +35,8 @@ cell * read_next(char** s, int depth) {
         }
         out[i] = '\0';
         cell* next = ((depth > 0) ? read_next(s, depth) : &nil);
+
+        /* TODO: replace this with call to a "categorize" function */
         return makecell( LABEL, (value){.label=out}, next);
     }
 }

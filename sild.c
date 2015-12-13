@@ -7,7 +7,7 @@
 
 int main() {
 
-    char* test = "'() hi mom ()";
+    char* test = "";
     cell* list = read(&test);
     debuglist(list);
 
