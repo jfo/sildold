@@ -18,8 +18,7 @@ cell* eval(cell *c, cell* dict) {
         return out;
     } else if (c->type == LIST) {
         cell* out;
-        out = makecell(LIST,(value) { .list = eval(c->value.list, dict)}, &nil);
-        out = apply(out);
+        out = apply(makecell(LIST,(value) { .list = eval(c->value.list, dict)}, &nil));
         out->next = eval(c->next, dict);
         return out;
     } else if (c->type == LABEL) {
@@ -78,7 +77,7 @@ int main() {
     cell* testdict = read(&test);
 
     /* char* testl = "(cons 'this '(taht))"; */
-    char* testl = "(cdr (cdr (car (cdr '(this that)))))";
+    char* testl = "(cons 'derp (cons '(hi) '(hi)))";
     cell* testlist = read(&testl);
     debuglist(eval(testlist, testdict));
 
