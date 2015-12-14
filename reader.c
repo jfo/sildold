@@ -1,4 +1,5 @@
 int isNotDisallowedChar(char c) { return !(c == '\0' || c == ')' || c == '(' || c == ' ' || c == '\n' || c == ','); };
+int isTerminalChar(char c) { return (c == '\0' || c == EOF); };
 
 int count_substring_length(char* s) {
     int i = 0;
@@ -6,9 +7,20 @@ int count_substring_length(char* s) {
     return i;
 }
 
+
+cell* categorize(char* c) {
+    return makecell( LABEL, (value){.label=c}, &nil);
+}
+
 cell* read(char**);
 
 cell * read_next(char** s, int depth) {
+
+    if (isTerminalChar(**s)) {
+        printf("Malformed input");
+        exit(1);
+    };
+
     if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') {
         *s += 1;
         return read_next(s, depth);
@@ -25,25 +37,28 @@ cell * read_next(char** s, int depth) {
     } else if (*s[0] == ')') {
         *s += 1;
         return &nil;
-    } else if (*s[0] == '\0') {
-        return &nil;
     } else {
         char* out = malloc(count_substring_length(*s));
         int i = 0;
-        while((isNotDisallowedChar(**s))) {
+        while(isNotDisallowedChar(**s)) {
             out[i] = **s;
             i++;
             *s += 1;
         }
         out[i] = '\0';
         cell* next = ((depth > 0) ? read_next(s, depth) : &nil);
-
-        /* TODO: replace this with call to a "categorize" function */
-        return makecell( LABEL, (value){.label=out}, next);
+        cell* outcell = categorize(out);
+        outcell->next = next;
+        return outcell;
     }
 }
 
 cell * read(char** s) {
+    if (*s[0] == ')') {
+        printf("Malformed input");
+        exit(1);
+    };
+
     if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') {
         ++*s;
         return read(s);
@@ -55,7 +70,7 @@ cell * read(char** s) {
         return &nil;
     } else {
         cell* out = read_next(s,0);
-        out->next = read_next(s, 0);
+        out->next = read(s);
         return out;
     }
 }
