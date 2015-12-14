@@ -7,7 +7,12 @@
 #include "debugging.c"
 #include "builtins.c"
 
-cell*apply(cell*);
+cell* define(cell *in, cell *dict) {
+    cell *new_dict = cdr(in);
+    cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
+    thing->value.list->next = copy_cell(dict->value.list);
+    return thing;
+}
 
 cell* eval(cell *c, cell* dict) {
     if (c == &nil) {
@@ -16,9 +21,19 @@ cell* eval(cell *c, cell* dict) {
         cell *out = quote(c->value.list->next);
         out->next = eval(c->next, dict);
         return out;
+    } else if (c->type == LIST && strcmp(c->value.list->value.label, "define") == 0) {
+        return define(c, dict);
+    } else if (
+            c->type == LIST
+            &&
+            c->value.list->type == LIST
+            &&
+            strcmp(c->value.list->value.list->value.label, "lambda") == 0
+            ) {
+        return lambda(c, dict);
     } else if (c->type == LIST) {
         cell* out;
-        out = apply(makecell(LIST,(value) { .list = eval(c->value.list, dict)}, &nil));
+        out = apply(makecell(LIST,(value) { .list = eval(c->value.list, dict)}, &nil), dict);
         out->next = eval(c->next, dict);
         return out;
     } else if (c->type == LABEL) {
@@ -36,7 +51,7 @@ cell* eval(cell *c, cell* dict) {
     return &nil;
 }
 
-cell* apply(cell *n) {
+cell* apply(cell *n, cell* dict) {
     cell* operator = n->value.list;
     cell* first_operand = n->value.list->next;
 
@@ -54,14 +69,10 @@ cell* apply(cell *n) {
         return cons(first_operand);
     /* } else if (strcmp(operator->value.label, "cond") == 0) { */
     /*     return cond(first_operand); */
-    /* } else if (strcmp(operator->value.label, "label") == 0) { */
-    /*     add_label(first_operand->value.label, copy_cell(first_operand->next)); */
-    /*     return find_label(first_operand->value.label); */
-    /* } else if (strcmp(operator->value.label, "lambda") == 0) { */
-    /*     return quote(n); */
-    /* } else if (operator->type == LIST && strcmp(operator->value.list->value.label, "lambda") == 0) { */
-    /*     return eval(lambda(n)); */
+    } else if (operator->type == LIST && strcmp(operator->value.list->value.label, "lambda") == 0) {
+        return lambda(n, dict);
     } else if (operator->type == LIST) {
+        return eval(operator, dict);
     } else {
         printf("Attempted to apply non-procedure \"%s\"", operator->value.label);
         exit(1);
@@ -71,15 +82,13 @@ cell* apply(cell *n) {
 }
 
 int main() {
-
-    /* char* test = "((that 7) (this 6))"; */
-    char* test = "((atom atom)(cons cons) (car car) (cdr cdr) (quote quote))";
+    char* test = "((atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define))";
     cell* testdict = read(&test);
-
-    /* char* testl = "(cons 'this '(taht))"; */
-    char* testl = "(atom (car (cons 'derp (cons '(hi) '(hi)))))";
+    char* testl = "(define cadr (lambda (list) (car (cdr list))))";
     cell* testlist = read(&testl);
-    debuglist(eval(testlist, testdict));
 
+    char* testls = "(cadr '(1 2 3))";
+    cell* testthing = read(&testls);
+    debuglist(eval(testthing, eval(testlist, testdict)));
     return 0;
 }

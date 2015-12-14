@@ -1,3 +1,6 @@
+cell*apply(cell*, cell*);
+cell*eval(cell*, cell*);
+
 cell* copy_cell(cell* n) {
     if (n->type == LIST) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, copy_cell(n->next));
@@ -112,4 +115,30 @@ cell* assoc(char* key, cell *dict) {
     } else {
         return assoc(key, cdr(dict));
     }
+};
+
+cell* interleave(cell* a, cell* b, cell*dict) {
+    if (a->value.list == &nil  || b->value.list == &nil) {
+        return &nil;
+    }
+    cell* output = makecell(LIST, (value){.list = car(a) }, &nil);
+    output->value.list->next = car(b);
+    output->next = interleave(cdr(a), cdr(b), dict);
+    return output;
+
+};
+
+cell* find_tail(cell* a) {
+    if (a->next == &nil) {
+        return a;
+    } else {
+        return find_tail(a->next);
+    }
+};
+
+cell* lambda(cell *in, cell *dict){
+    cell *new_dict = interleave(copy_single_cell(in->value.list->value.list->next), cdr(in), dict);
+    cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
+    find_tail(thing->value.list)->next = copy_cell(dict->value.list);
+    return eval(in->value.list->value.list->next->next, thing);
 };
