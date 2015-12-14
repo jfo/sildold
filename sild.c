@@ -9,6 +9,7 @@
 
 cell* define(cell *in, cell **dict) {
     cell *new_dict = cdr(in);
+    new_dict->value.list->next = eval(new_dict->value.list->next, dict);
     cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
     thing->value.list->next = copy_cell((*dict)->value.list);
     *dict = thing;
@@ -99,6 +100,7 @@ int main() {
     char* standard_dictionary_string = "((atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define))";
     cell* standard_dictionary = read(&standard_dictionary_string);
     while(*ugh != '\0') {
+        /* eval(read_next(&ugh, 0), &standard_dictionary); */
         debuglist(eval(read_next(&ugh, 0), &standard_dictionary));
     }
     return 0;
