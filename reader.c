@@ -15,10 +15,8 @@ cell* categorize(char* c) {
 cell* read(char**);
 
 cell * read_next(char** s, int depth) {
-
     if (isTerminalChar(**s)) {
-        printf("Malformed input");
-        exit(1);
+        exit(0);
     };
 
     if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') {
@@ -55,8 +53,8 @@ cell * read_next(char** s, int depth) {
 
 cell * read(char** s) {
     if (*s[0] == ')') {
-        printf("Malformed input");
-        exit(1);
+        printf("EOF");
+        exit(0);
     };
 
     if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') {

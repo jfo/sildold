@@ -1,5 +1,5 @@
-cell*apply(cell*, cell*);
-cell*eval(cell*, cell*);
+cell*apply(cell*, cell**);
+cell*eval(cell*, cell**);
 
 cell* copy_cell(cell* n) {
     if (n->type == LIST) {
@@ -140,5 +140,5 @@ cell* lambda(cell *in, cell *dict){
     cell *new_dict = interleave(copy_single_cell(in->value.list->value.list->next), cdr(in), dict);
     cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
     find_tail(thing->value.list)->next = copy_cell(dict->value.list);
-    return eval(in->value.list->value.list->next->next, thing);
+    return eval(in->value.list->value.list->next->next, &thing);
 };
