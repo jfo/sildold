@@ -9,9 +9,10 @@
 
 int main() {
 
-    char* test = "((#t 6))";
+    /* char* test = "((that 7) (this 6))"; */
+    char* test = "((this 6) (that x) (tat thing))";
     cell* list = read(&test);
-    debuglist(cond(list));
+    debuglist(assoc("tat", list));
 
     return 0;
 }
