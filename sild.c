@@ -42,8 +42,8 @@ cell* apply(cell *n) {
 
     if (strcmp(operator->value.label, "quote") == 0) {
         return quote(first_operand);
-    /* } else if (strcmp(operator->value.label, "label") == 0) { */
-    /*     return label(first_operand); */
+    } else if (strcmp(operator->value.label, "atom") == 0) {
+        return atom(first_operand);
     } else if (strcmp(operator->value.label, "eq") == 0) {
         return eq(first_operand);
     } else if (strcmp(operator->value.label, "car") == 0) {
@@ -73,11 +73,11 @@ cell* apply(cell *n) {
 int main() {
 
     /* char* test = "((that 7) (this 6))"; */
-    char* test = "((cons cons) (car car) (cdr cdr))";
+    char* test = "((atom atom)(cons cons) (car car) (cdr cdr) (quote quote))";
     cell* testdict = read(&test);
 
     /* char* testl = "(cons 'this '(taht))"; */
-    char* testl = "(cons 'derp (cons '(hi) '(hi)))";
+    char* testl = "(atom (car (cons 'derp (cons '(hi) '(hi)))))";
     cell* testlist = read(&testl);
     debuglist(eval(testlist, testdict));
 
