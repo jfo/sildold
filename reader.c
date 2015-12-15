@@ -15,6 +15,12 @@ cell* categorize(char* c) {
 cell* read(char**);
 
 cell * read_next(char** s, int depth) {
+    if (**s == ';') {
+        while(**s != '\n') {
+            *s += 1;
+        }
+    };
+
     if (isTerminalChar(**s)) {
         exit(0);
     };
@@ -51,24 +57,24 @@ cell * read_next(char** s, int depth) {
     }
 }
 
-cell * read(char** s) {
-    if (*s[0] == ')') {
-        printf("EOF");
-        exit(0);
-    };
+/* cell * read(char** s) { */
+/*     if (*s[0] == ')') { */
+/*         printf("EOF"); */
+/*         exit(0); */
+/*     }; */
 
-    if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') {
-        ++*s;
-        return read(s);
-    } else if (*s[0] == '\'') {
-        ++*s;
-        cell *quote = makecell(LABEL, (value){.label = "quote"}, read_next(s, 0));
-        return makecell(LIST, (value){.list = quote}, read(s));
-    } else if (*s[0] == '\0') {
-        return &nil;
-    } else {
-        cell* out = read_next(s,0);
-        out->next = read(s);
-        return out;
-    }
-}
+/*     if (*s[0] == ' ' || *s[0] == '\n' || *s[0] == ',') { */
+/*         ++*s; */
+/*         return read(s); */
+/*     } else if (*s[0] == '\'') { */
+/*         ++*s; */
+/*         cell *quote = makecell(LABEL, (value){.label = "quote"}, read_next(s, 0)); */
+/*         return makecell(LIST, (value){.list = quote}, read(s)); */
+/*     } else if (*s[0] == '\0') { */
+/*         return &nil; */
+/*     } else { */
+/*         cell* out = read_next(s,0); */
+/*         out->next = read(s); */
+/*         return out; */
+/*     } */
+/* } */

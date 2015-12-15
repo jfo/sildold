@@ -142,3 +142,12 @@ cell* lambda(cell *in, cell *dict){
     find_tail(thing->value.list)->next = copy_cell(dict->value.list);
     return eval(in->value.list->value.list->next->next, &thing);
 };
+
+cell* define(cell *in, cell **dict) {
+    cell *new_dict = cdr(in);
+    new_dict->value.list->next = new_dict->value.list->next;
+    cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
+    thing->value.list->next = copy_cell((*dict)->value.list);
+    *dict = thing;
+    return &nil;
+}

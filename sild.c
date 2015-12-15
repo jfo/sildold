@@ -7,15 +7,6 @@
 #include "debugging.c"
 #include "builtins.c"
 
-cell* define(cell *in, cell **dict) {
-    cell *new_dict = cdr(in);
-    new_dict->value.list->next = eval(new_dict->value.list->next, dict);
-    cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
-    thing->value.list->next = copy_cell((*dict)->value.list);
-    *dict = thing;
-    return &nil;
-}
-
 cell* eval(cell *c, cell** dict) {
     if (c == &nil) {
         return &nil;
@@ -57,9 +48,7 @@ cell* apply(cell *n, cell** dict) {
     cell* operator = n->value.list;
     cell* first_operand = n->value.list->next;
 
-    if (strcmp(operator->value.label, "quote") == 0) {
-        return quote(first_operand);
-    } else if (strcmp(operator->value.label, "atom") == 0) {
+    if (strcmp(operator->value.label, "atom") == 0) {
         return atom(first_operand);
     } else if (strcmp(operator->value.label, "eq") == 0) {
         return eq(first_operand);
@@ -69,8 +58,8 @@ cell* apply(cell *n, cell** dict) {
         return cdr(first_operand);
     } else if (strcmp(operator->value.label, "cons") == 0) {
         return cons(first_operand);
-    /* } else if (strcmp(operator->value.label, "cond") == 0) { */
-    /*     return cond(first_operand); */
+    } else if (strcmp(operator->value.label, "display") == 0) {
+        debuglist(n->value.list->next);
     } else if (operator->type == LIST && strcmp(operator->value.list->value.label, "lambda") == 0) {
         return lambda(n, *dict);
     } else if (operator->type == LIST) {
@@ -85,7 +74,7 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main() {
-    FILE* fp = fopen("./test.sld", "r");
+    FILE* fp = fopen("./test.scm", "r");
     char c = getc(fp);
     char* ugh = malloc(sizeof(char) * 1000);
     int i = 0;
@@ -96,12 +85,10 @@ int main() {
     }
     ugh[i] = '\0';
     realloc(ugh, i);
-    printf("%s", ugh);
-    char* standard_dictionary_string = "((atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define))";
-    cell* standard_dictionary = read(&standard_dictionary_string);
+    char* standard_dictionary_string = "((eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
+    cell* standard_dictionary = read_next(&standard_dictionary_string, 0);
     while(*ugh != '\0') {
-        /* eval(read_next(&ugh, 0), &standard_dictionary); */
-        debuglist(eval(read_next(&ugh, 0), &standard_dictionary));
+        eval(read_next(&ugh, 0), &standard_dictionary);
     }
     return 0;
 }
