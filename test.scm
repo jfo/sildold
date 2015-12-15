@@ -1,11 +1,8 @@
 (define null? (lambda (x) (eq? x '())))
 
 (display
-  (null? '())
-)
-(display
-  (null? '())
-)
-(display
-  (null? '())
-)
+  (cond
+         ((null? '(x)) '4)
+         ((null? '(s)) '3)
+))
+

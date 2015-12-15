@@ -16,6 +16,8 @@ cell* eval(cell *c, cell** dict) {
         return out;
     } else if (c->type == LIST && strcmp(c->value.list->value.label, "define") == 0) {
         return define(c, dict);
+    } else if (c->type == LIST && strcmp(c->value.list->value.label, "cond") == 0) {
+        return cond(c->value.list->next, *dict);
     } else if (
             c->type == LIST
             &&
@@ -85,7 +87,7 @@ int main() {
     }
     ugh[i] = '\0';
     realloc(ugh, i);
-    char* standard_dictionary_string = "((eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
+    char* standard_dictionary_string = "((cond cond)(eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
     cell* standard_dictionary = read_next(&standard_dictionary_string, 0);
     while(*ugh != '\0') {
         eval(read_next(&ugh, 0), &standard_dictionary);
