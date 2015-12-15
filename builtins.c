@@ -108,7 +108,6 @@ cell* cond(cell* operands, cell *dict) {
     if (operands == &nil) {
         return &nil;
     }
-    debuglist(operands);
     if (eval(operands->value.list, &dict) == &truth) {
         return copy_cell(eval(operands->value.list->next, &dict));
     } else {
