@@ -41,5 +41,4 @@ void printlist(cell* l) {
 void debuglist(cell* l) {
     printf("\n");
     debuglistinner(l, 0);
-    getchar();
 }
