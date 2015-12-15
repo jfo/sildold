@@ -20,16 +20,22 @@
       ((null? l) acc)
       ( (eq? '() '()) (reverser (cdr l) (cons (car l) acc))))))
 
+(define assoc
+  (lambda (k dict)
+    (cond
+      ((null? dict) '())
+      ((eq? k (car (car dict))) (cadr (car dict)))
+      ((eq? '() '()) (assoc k (cdr dict))))))
+
 ; (display
 ;   (reverser '(1 2 3 4 5 6) '())
 ; )
 
+(define mydict '((a 1) (b 2) (c 3)) )
 (display
-  ((lambda (a)
-     ((lambda (b) b) 'c)) 'd)
+  (assoc 'c mydict)
+)
+(display
+  (assoc 'c '((a 1) (b 2) (c 3)) )
 )
 
-(display
-  ((lambda (a)
-     ((lambda (b) a) 'c)) 'd)
-)
