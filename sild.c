@@ -80,23 +80,26 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main() {
-    FILE* fp = fopen("./tests.scm", "r");
+    FILE* fp = fopen("./test.scm", "r");
     char c = getc(fp);
     /* this input mode is terrible. */
     char* ugh = malloc(sizeof(char) * 10000);
     int i = 0;
+
     while (c != EOF) {
         ugh[i] = c;
         i++;
         c = getc(fp);
     }
+
     ugh[i] = '\0';
     realloc(ugh, i);
-    char* standard_dictionary_string = "((lambda lambda)(cond cond)(eq eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
-    cell* standard_dictionary = read_next(&standard_dictionary_string, 0);
+    char* standard_dictionary_string = "((lambda lambda)(cond cond)(eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
+    cell* standard_dictionary = read(&standard_dictionary_string, 0);
     while(*ugh != '\0') {
-        cell* thing = read_next(&ugh, 0);
+        cell* thing = read(&ugh, 0);
         eval(thing, &standard_dictionary);
+        freecell(thing);
     }
     return 0;
 }

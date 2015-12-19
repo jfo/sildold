@@ -33,3 +33,16 @@ cell* copycell(cell* c) {
     }
     return &nil;
 }
+
+void freecell(cell* l) {
+    if (l == &nil) {
+        return;
+    } else if (l->type == LIST) {
+        free(l);
+        freecell(l->value.list);
+        freecell(l->next);
+    } else if (l->type == LABEL) {
+        free(l);
+        freecell(l->next);
+    }
+}

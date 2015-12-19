@@ -152,7 +152,7 @@ cell* lambda(cell *in, cell *dict){
 };
 
 cell* define(cell *in, cell **dict) {
-    cell *new_dict = cdr(in);
+    cell *new_dict = cdr(copy_cell(in));
     cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
     thing->value.list->next = copy_cell((*dict)->value.list);
     *dict = thing;
