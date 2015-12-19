@@ -62,6 +62,10 @@ cell* apply(cell *n, cell** dict) {
         return cons(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {
         debuglist(n->value.list->next);
+    } else if (strcmp(operator->value.label, "quote") == 0) {
+        cell *out = quote(n->value.list->next);
+        out->next = eval(n->next, dict);
+        return out;
     } else if (operator->type == LIST && strcmp(operator->value.list->value.label, "lambda") == 0) {
         return lambda(n, *dict);
     } else if (operator->type == LIST) {
@@ -76,9 +80,10 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main() {
-    FILE* fp = fopen("./test.scm", "r");
+    FILE* fp = fopen("./tests.scm", "r");
     char c = getc(fp);
-    char* ugh = malloc(sizeof(char) * 1000);
+    /* this input mode is terrible. */
+    char* ugh = malloc(sizeof(char) * 10000);
     int i = 0;
     while (c != EOF) {
         ugh[i] = c;
@@ -87,10 +92,11 @@ int main() {
     }
     ugh[i] = '\0';
     realloc(ugh, i);
-    char* standard_dictionary_string = "((cond cond)(eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
+    char* standard_dictionary_string = "((lambda lambda)(cond cond)(eq eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
     cell* standard_dictionary = read_next(&standard_dictionary_string, 0);
     while(*ugh != '\0') {
-        eval(read_next(&ugh, 0), &standard_dictionary);
+        cell* thing = read_next(&ugh, 0);
+        eval(thing, &standard_dictionary);
     }
     return 0;
 }
