@@ -7,8 +7,34 @@ int count_substring_length(char* s) {
     return i;
 }
 
+
+const int builtins_len = 8;
+const char * builtins[] = {
+    "quote",
+    "lambda",
+    "cond",
+    "atom",
+    "car",
+    "cdr",
+    "cons",
+    "display",
+};
+
+int isbuiltin(char* input) {
+    for (int i = 0; i < builtins_len; i++) {
+        if (!strcmp(input, builtins[i])) {
+            return 1;
+        }
+    };
+    return 0;
+}
+
 cell* categorize(char* c) {
-    return makecell( LABEL, (value){.label=c}, &nil);
+    if (isbuiltin(c)) {
+        return makecell(BUILTIN, (value){.label=c}, &nil);
+    } else {
+        return makecell(LABEL, (value){.label=c}, &nil);
+    }
 }
 
 cell * read(char** s, int depth) {

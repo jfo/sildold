@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum { NIL, LABEL, LIST };
+enum { NIL, LABEL, LIST, BUILTIN};
 
 typedef union value {
     char * label;

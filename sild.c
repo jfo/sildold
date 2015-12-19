@@ -10,6 +10,10 @@
 cell* eval(cell *c, cell** dict) {
     if (c == &nil) {
         return &nil;
+    } else if (c->type == BUILTIN) {
+        cell *out = c;
+        out->next = eval(c->next, dict);
+        return out;
     } else if (c->type == LIST && strcmp(c->value.list->value.label, "quote") == 0) {
         cell *out = quote(c->value.list->next);
         out->next = eval(c->next, dict);
