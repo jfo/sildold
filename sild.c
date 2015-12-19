@@ -99,7 +99,6 @@ int main() {
     while(*ugh != '\0') {
         cell* thing = read(&ugh, 0);
         eval(thing, &standard_dictionary);
-        freecell(thing);
     }
     return 0;
 }

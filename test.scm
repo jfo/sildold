@@ -4,7 +4,7 @@
                 (cond ((eq? x (car l)) (cadr l))
                       ((eq? '() '()) (thing x (cdr l))))))
 
-(define else (eq? '()'()))
+; (define else (eq? '()'()))
 ; (define atom atom?)
 
 ; (define member?
@@ -18,24 +18,24 @@
   (lambda (l acc)
     (cond
       ((null? l) acc)
-      ( (eq? '() '()) (reverser (cdr l) (cons (car l) acc))))))
+      ((eq? '() '()) (reverser (cdr l) (cons (car l) acc))))))
 
-(define assoc
-  (lambda (k dict)
-    (cond
-      ((null? dict) '())
-      ((eq? k (car (car dict))) (cadr (car dict)))
-      ((eq? '() '()) (assoc k (cdr dict))))))
+; (define assoc
+;   (lambda (k dict)
+;     (cond
+;       ((null? dict) '())
+;       ((eq? k (car (car dict))) (cadr (car dict)))
+;       ((eq? '() '()) (assoc k (cdr dict))))))
 
+(display
+  (reverser '(1 2 3 4 5 6) '())
+)
+
+; (define mydict '((a 1) (b 2) (c 3)) )
 ; (display
-;   (reverser '(1 2 3 4 5 6) '())
+;   (assoc 'c mydict)
 ; )
-
-(define mydict '((a 1) (b 2) (c 3)) )
-(display
-  (assoc 'c mydict)
-)
-(display
-  (assoc 'c '((a 1) (b 2) (c 3)) )
-)
+; (display
+;   (assoc 'c '((a 1) (b 2) (c 3)) )
+; )
 
