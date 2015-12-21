@@ -31,6 +31,10 @@ cell* quote(cell* operand) {
 
 cell* atom(cell* operand) {
     if (
+            (operand->type == INT && operand->next == &nil)
+            ||
+            (operand->type == BUILTIN && operand->next == &nil)
+            ||
             (operand->type == LABEL && operand->next == &nil)
             ||
             (operand->type == LIST && operand->value.list == &nil)
@@ -157,4 +161,16 @@ cell* define(cell *in, cell **dict) {
     thing->value.list->next = copy_cell((*dict)->value.list);
     *dict = thing;
     return &nil;
+}
+
+// MATHS
+cell* add_inner(cell* operands, int acc) {
+    if (operands->next == &nil) {
+        return makecell(INT, (value){ .num = acc + operands->value.num}, &nil);
+    } else {
+        return add_inner(operands->next, acc + operands->value.num);
+    }
+}
+cell* add(cell* input) {
+    return add_inner(input, 0);
 }

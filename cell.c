@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum { NIL, LABEL, LIST, BUILTIN};
+enum { NIL, LABEL, LIST, BUILTIN, INT };
 
 typedef union value {
     char * label;
+    int num;
     struct cell * list;
 } value;
 

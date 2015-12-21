@@ -21,6 +21,14 @@ void debuglistinner(cell* l, int depth) {
         printtabs(depth);
         printf("LABEL: addr:%p, value=%s, next_item=%p  \n", l, l->value.label, l->next);
         debuglistinner(l->next, depth++);
+    } else if (l->type == BUILTIN) {
+        printtabs(depth);
+        printf("BUILTIN: addr:%p, value=%s, next_item=%p  \n", l, l->value.label, l->next);
+        debuglistinner(l->next, depth++);
+    } else if (l->type == INT) {
+        printtabs(depth);
+        printf("INT: addr:%p, value=%i, next_item=%p  \n", l, l->value.num, l->next);
+        debuglistinner(l->next, depth++);
     }
 }
 

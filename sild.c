@@ -10,7 +10,7 @@
 cell* eval(cell *c, cell** dict) {
     if (c == &nil) {
         return &nil;
-    } else if (c->type == BUILTIN) {
+    } else if (c->type == BUILTIN || c->type == INT) {
         cell *out = c;
         out->next = eval(c->next, dict);
         return out;
@@ -64,6 +64,8 @@ cell* apply(cell *n, cell** dict) {
         return cdr(first_operand);
     } else if (strcmp(operator->value.label, "cons") == 0) {
         return cons(first_operand);
+    } else if (strcmp(operator->value.label, "+") == 0) {
+        return add(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {
         debuglist(n->value.list->next);
     } else if (strcmp(operator->value.label, "quote") == 0) {

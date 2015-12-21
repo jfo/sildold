@@ -1,3 +1,4 @@
+(define eq eq?)
 ; (display (atom)) ; should throw an arity error
 ; (display (atom 1))
 ; (display (atom '1))
@@ -8,7 +9,7 @@
 
 ; (display (eq)) ; this crashes?
 ; (display (eq 1))
-; (display (eq '1))
+(display (eq '1 '1))
 ; (display (eq '1 '1))
 ; (display (eq '1 '2))
 ; (display (eq '1 '()))
