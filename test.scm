@@ -28,7 +28,7 @@
 ;       ((eq? '() '()) (assoc k (cdr dict))))))
 
 (display
-  (+ 2 2)
+  (* 2 2 )
 )
 
 ; (define mydict '((a 1) (b 2) (c 3)) )

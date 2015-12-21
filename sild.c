@@ -41,6 +41,7 @@ cell* eval(cell *c, cell** dict) {
         if (val != &nil) {
              out = val;
         } else {
+            debuglist(c);
             printf("Unbound variable: %s\n", c->value.label);
             exit(1);
         }
@@ -66,6 +67,8 @@ cell* apply(cell *n, cell** dict) {
         return cons(first_operand);
     } else if (strcmp(operator->value.label, "+") == 0) {
         return add(first_operand);
+    } else if (strcmp(operator->value.label, "*") == 0) {
+        return mult(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {
         debuglist(n->value.list->next);
     } else if (strcmp(operator->value.label, "quote") == 0) {
