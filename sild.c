@@ -98,11 +98,12 @@ int main() {
 
     ugh[i] = '\0';
     realloc(ugh, i);
-    char* standard_dictionary_string = "((lambda lambda)(cond cond)(eq? eq)(atom atom) (cons cons) (car car) (cdr cdr) (quote quote) (define define)(display display))";
-    cell* standard_dictionary = read(&standard_dictionary_string, 0);
+
+    cell* standard_env = makecell(LIST, (value){.list = &nil}, &nil);
+
     while(*ugh != '\0') {
         cell* thing = read(&ugh, 0);
-        eval(thing, &standard_dictionary);
+        eval(thing, &standard_env);
     }
     return 0;
 }
