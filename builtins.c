@@ -70,6 +70,17 @@ cell* eq(cell* operand) {
             )
     {
         return &truth;
+    } else if (
+            first->type == INT
+            &&
+            second->type == INT
+            &&
+            first->value.num == second->value.num
+            &&
+            operand->next->next == &nil
+            )
+    {
+        return &truth;
     } else if (operand->next->next != &nil) {
         printf("'eq' accepts only two arguments.\n\n");
         exit(1);
