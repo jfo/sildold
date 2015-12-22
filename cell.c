@@ -26,15 +26,6 @@ cell* makecell(int type, value val, cell * next) {
     return output;
 }
 
-cell* copycell(cell* c) {
-    if (c->type == LIST) {
-        return makecell( LIST, (value){.list=copycell(c->value.list)}, copycell(c->next));
-    } else if (c->type == LABEL) {
-        return makecell( LABEL, (value){.label=c->value.label}, copycell(c->next));
-    }
-    return &nil;
-}
-
 void freecell(cell* l) {
     if (l == &nil) {
         return;

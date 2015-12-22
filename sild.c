@@ -93,7 +93,7 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main() {
-    FILE* fp = fopen("./test2.scm", "r");
+    FILE* fp = fopen("./examples/fizzbuzz.scm", "r");
     char c = getc(fp);
     /* this input mode is terrible. */
     char* ugh = malloc(sizeof(char) * 10000);

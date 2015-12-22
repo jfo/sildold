@@ -18,6 +18,8 @@ cell* copy_single_cell(cell* n) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, &nil);
     } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, &nil);
+    } else if (n->type == INT) {
+        return makecell(INT, (value){.num=n->value.num}, &nil);
     }
     return &nil;
 }
