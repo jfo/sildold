@@ -82,6 +82,8 @@ cell* categorize(char* c) {
     }
 }
 
+void debuglist(cell*);
+
 cell * read(char** s, int depth) {
     if (**s == ';') {
         while(**s != '\n') {

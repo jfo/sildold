@@ -14,6 +14,8 @@ cell* eval(cell *c, cell** dict) {
         cell *out = c;
         out->next = eval(c->next, dict);
         return out;
+    } else if (c->type == LIST && strcmp(c->value.list->value.label, "lambda") == 0) {
+        return c;
     } else if (c->type == LIST && strcmp(c->value.list->value.label, "quote") == 0) {
         cell *out = quote(c->value.list->next);
         out->next = eval(c->next, dict);

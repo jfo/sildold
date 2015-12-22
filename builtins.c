@@ -4,8 +4,10 @@ cell*eval(cell*, cell**);
 cell* copy_cell(cell* n) {
     if (n->type == LIST) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, copy_cell(n->next));
-    } else if (n->type == LABEL || n->type == BUILTIN) {
+    } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, copy_cell(n->next));
+    } else if (n->type == BUILTIN) {
+        return makecell(BUILTIN, (value){.label=n->value.label}, copy_cell(n->next));
     } else if (n->type == INT) {
         return makecell(INT, (value){.num=n->value.num}, copy_cell(n->next));
     } else {
@@ -18,6 +20,8 @@ cell* copy_single_cell(cell* n) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, &nil);
     } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, &nil);
+    } else if (n->type == BUILTIN) {
+        return makecell(BUILTIN, (value){.label=n->value.label}, &nil);
     } else if (n->type == INT) {
         return makecell(INT, (value){.num=n->value.num}, &nil);
     }
@@ -127,8 +131,8 @@ cell* cond(cell* operands, cell *dict) {
     if (operands == &nil) {
         return &nil;
     }
-    if (eval(operands->value.list, &dict) == &truth) {
-        return copy_cell(eval(operands->value.list->next, &dict));
+    if (eval(copy_single_cell(operands->value.list), &dict) == &truth) {
+        return copy_cell(eval(copy_single_cell(operands->value.list->next), &dict));
     } else {
         return cond(operands->next, dict);
     }
@@ -172,6 +176,7 @@ cell* lambda(cell *in, cell *dict){
 
 cell* define(cell *in, cell **dict) {
     cell *new_dict = cdr(copy_cell(in));
+    new_dict->value.list->next = eval(new_dict->value.list->next, dict);
     cell* thing =  makecell(LIST, (value){.list = new_dict}, &nil);
     thing->value.list->next = copy_cell((*dict)->value.list);
     *dict = thing;
