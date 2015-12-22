@@ -8,10 +8,11 @@ int count_substring_length(char* s) {
 }
 
 
-const int builtins_len = 11;
+const int builtins_len = 12;
 const char * builtins[] = {
     "*",
     "+",
+    "-",
     "eq",
     "quote",
     "lambda",
@@ -33,6 +34,9 @@ int isbuiltin(char* input) {
 }
 
 int isint(char* input) {
+    if (input[0] == '-' && isint(input + 1)) { return 1; };
+    if (input[0] == '\0') { return 0; };
+
     for (int i = 0; i < strlen(input); i++) {
         if (input[i] < 48 || input[i] > 57) {
             return 0;
@@ -41,15 +45,30 @@ int isint(char* input) {
     return 1;
 }
 
-int to_i(char* input) {
+int to_i_inner(char* input, int neg) {
+
+    if (input[0] == '-') {
+        return to_i_inner(input + 1, 1);
+    }
+
     int output = 0;
     for (int i = 0; i < strlen(input); i++) {
         int placer = 1;
         for (int j = i; j < strlen(input) - 1; j++) { placer *= 10; };
         output += ((int)input[i] - 48) * placer;
     }
-    return output;
+
+    if (neg) {
+        return output - (output * 2);
+    } else {
+        return output;
+    }
 }
+
+int to_i(char* input) {
+    return to_i_inner(input, 0);
+}
+
 
 cell* categorize(char* c) {
     if (isbuiltin(c)) {

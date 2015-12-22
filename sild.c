@@ -67,6 +67,8 @@ cell* apply(cell *n, cell** dict) {
         return cons(first_operand);
     } else if (strcmp(operator->value.label, "+") == 0) {
         return add(first_operand);
+    } else if (strcmp(operator->value.label, "-") == 0) {
+        return subtract(first_operand);
     } else if (strcmp(operator->value.label, "*") == 0) {
         return mult(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {

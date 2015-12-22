@@ -167,12 +167,21 @@ cell* define(cell *in, cell **dict) {
 cell* add_inner(cell* operands, int acc) {
     if (operands == &nil) {
         return makecell(INT, (value){ .num = acc }, &nil);
-    } else {
-        return add_inner(operands->next, acc + operands->value.num);
     }
+    return add_inner(operands->next, acc + operands->value.num);
 }
 cell* add(cell* input) {
     return add_inner(input, 0);
+}
+
+cell* subtract_inner(cell* operands, int acc) {
+    if (operands == &nil) {
+        return makecell(INT, (value){ .num = acc }, &nil);
+    }
+    return subtract_inner(operands->next, acc - operands->value.num);
+}
+cell* subtract(cell* input) {
+    return subtract_inner(input->next, input->value.num);
 }
 
 cell* mult_inner(cell* operands, int acc) {
