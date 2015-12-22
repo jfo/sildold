@@ -6,6 +6,8 @@ cell* copy_cell(cell* n) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, copy_cell(n->next));
     } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, copy_cell(n->next));
+    } else if (n->type == INT) {
+        return makecell(INT, (value){.num=n->value.num}, copy_cell(n->next));
     } else {
         return &nil;
     }
@@ -204,4 +206,15 @@ cell* mult_inner(cell* operands, int acc) {
 }
 cell* mult(cell* input) {
     return mult_inner(input, 1);
+}
+
+cell* divide_inner(cell* operands, int acc) {
+    if (operands == &nil) {
+        return makecell(INT, (value){ .num = acc }, &nil);
+    } else {
+        return divide_inner(operands->next, acc / operands->value.num);
+    }
+}
+cell* divide(cell* input) {
+    return divide_inner(input->next, input->value.num);
 }

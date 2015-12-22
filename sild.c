@@ -71,6 +71,8 @@ cell* apply(cell *n, cell** dict) {
         return subtract(first_operand);
     } else if (strcmp(operator->value.label, "*") == 0) {
         return mult(first_operand);
+    } else if (strcmp(operator->value.label, "/") == 0) {
+        return divide(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {
         debuglist(n->value.list->next);
     } else if (strcmp(operator->value.label, "quote") == 0) {
