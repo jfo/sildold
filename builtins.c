@@ -4,7 +4,7 @@ cell*eval(cell*, cell**);
 cell* copy_cell(cell* n) {
     if (n->type == LIST) {
         return makecell(LIST, (value) { .list = copy_cell(n->value.list) }, copy_cell(n->next));
-    } else if (n->type == LABEL) {
+    } else if (n->type == LABEL || n->type == BUILTIN) {
         return makecell(LABEL, (value){.label=n->value.label}, copy_cell(n->next));
     } else if (n->type == INT) {
         return makecell(INT, (value){.num=n->value.num}, copy_cell(n->next));

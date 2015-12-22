@@ -8,7 +8,7 @@ int count_substring_length(char* s) {
 }
 
 
-const int builtins_len = 13;
+const int builtins_len = 14;
 const char * builtins[] = {
     "*",
     "+",
@@ -23,6 +23,7 @@ const char * builtins[] = {
     "cdr",
     "cons",
     "display",
+    "define",
 };
 
 int isbuiltin(char* input) {
