@@ -8,12 +8,13 @@ int count_substring_length(char* s) {
 }
 
 
-const int builtins_len = 14;
+const int builtins_len = 15;
 const char * builtins[] = {
     "*",
     "+",
     "-",
     "/",
+    "%",
     "eq",
     "quote",
     "lambda",

@@ -225,3 +225,7 @@ cell* divide_inner(cell* operands, int acc) {
 cell* divide(cell* input) {
     return divide_inner(input->next, input->value.num);
 }
+
+cell* modulo(cell* input) {
+    return makecell(INT, (value){ .num = (input->value.num % input->next->value.num) }, &nil);
+}
