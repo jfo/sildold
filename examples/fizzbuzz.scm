@@ -5,13 +5,15 @@
                   ((eq (% x 3) 0)
                    (cond
                       ((eq (% x 5) 0)
-                      (thing (+ x 1) (cons 'fizzbuzz acc)))
+                      (fizzbuzz (+ x 1) (cons 'fizzbuzz acc)))
                      ((eq 1 1)
-                      (thing (+ x 1) (cons 'fizz acc)))))
+                      (fizzbuzz (+ x 1) (cons 'fizz acc)))))
                   ((eq (% x 5) 0)
-                   (thing (+ x 1) (cons 'buzz acc)))
+                   (fizzbuzz (+ x 1) (cons 'buzz acc)))
                   ((eq 1 1)
-                   (thing (+ x 1) (cons x acc))))))
+                   (fizzbuzz (+ x 1) (cons x acc))))))
 
+(define do-fizzbuzz (fizzbuzz 1 '()))
 
-(display (fizzbuzz 1 '()))
+(display
+  (do-fizzbuzz))
