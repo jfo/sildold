@@ -1,34 +1,34 @@
-; (define null? (lambda (x) (eq? x '())))
-; (define cadr (lambda (x) (car (cdr x))))
-; (define thing (lambda (x l)
-;                 (cond ((eq? x (car l)) (cadr l))
-;                       ((eq? '() '()) (thing x (cdr l))))))
+(define eq? eq)
+(define null? (lambda (x) (eq x '())))
+(define cadr (lambda (x) (car (cdr x))))
+(define thing (lambda (x l)
+                (cond ((eq x (car l)) (cadr l))
+                      ((eq '() '()) (thing x (cdr l))))))
 
-; (define else (eq? '()'()))
-; (define atom atom?)
+(define else (eq '()'()))
 
-; (define member?
-;   (lambda (a lat)
-;     (cond
-;       ((null? lat) '())
-;       ((eq? a (car lat)) (atom? '()))
-;       ((atom? '()) (member? a (cdr lat))))))
+(define member?
+  (lambda (a lat)
+    (cond
+      ((null? lat) '())
+      ((eq a (car lat)) (atom? '()))
+      ((atom? '()) (member? a (cdr lat))))))
 
-; (define reverser
-;   (lambda (l acc)
-;     (cond
-;       ((null? l) acc)
-;       ((eq? '() '()) (reverser (cdr l) (cons (car l) acc))))))
+(define reverser
+  (lambda (l acc)
+    (cond
+      ((null? l) acc)
+      ((eq '() '()) (reverser (cdr l) (cons (car l) acc))))))
 
 ; (define assoc
 ;   (lambda (k dict)
 ;     (cond
 ;       ((null? dict) '())
-;       ((eq? k (car (car dict))) (cadr (car dict)))
-;       ((eq? '() '()) (assoc k (cdr dict))))))
+;       ((eq k (car (car dict))) (cadr (car dict)))
+;       ((eq '() '()) (assoc k (cdr dict))))))
 
 (display
-  (- 1 1)
+  (reverser '(- 1 1) '())
 )
 
 ; (define mydict '((a 1) (b 2) (c 3)) )

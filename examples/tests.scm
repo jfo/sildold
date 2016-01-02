@@ -1,4 +1,3 @@
-(define eq eq?)
 ; (display (atom)) ; should throw an arity error
 ; (display (atom 1))
 ; (display (atom '1))
@@ -9,7 +8,7 @@
 
 ; (display (eq)) ; this crashes?
 ; (display (eq 1))
-(display (eq '1 '1))
+; (display (eq '1 '1))
 ; (display (eq '1 '1))
 ; (display (eq '1 '2))
 ; (display (eq '1 '()))
@@ -35,7 +34,7 @@
 
 ; (display (cons )) ; breaks, should throw arity error
 ; (display (cons '1)) ; breaks, should throw arity error
-; (display (cons '1 '1)) ; returns list with 1 in it? should throw error, scheme returns cell (1 .1)
+; (display (cons '1 '1)) ; returns list with 1 in it? should throw error, scheme returns cell (1 . 1)
 ; (display (cons '1 '(2)))
 ; (display (cons '(1) '(2)))
 ; (display (cons '1 '()))
@@ -59,6 +58,6 @@
 ; (display (quote))
 ; (display (quote '1 '2))
 
-; (display (lambda (x) x))
+(display ((lambda (x) '(x)) 10))
 ; (display ((lambda (x) x) '1))
 

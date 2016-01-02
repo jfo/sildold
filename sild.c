@@ -78,7 +78,7 @@ cell* apply(cell *n, cell** dict) {
     } else if (strcmp(operator->value.label, "%") == 0) {
         return modulo(first_operand);
     } else if (strcmp(operator->value.label, "display") == 0) {
-        debuglist(n->value.list->next);
+        printlist(n->value.list->next, 0);
     } else if (strcmp(operator->value.label, "quote") == 0) {
         cell *out = quote(n->value.list->next);
         out->next = eval(n->next, dict);
@@ -96,8 +96,18 @@ cell* apply(cell *n, cell** dict) {
 
 }
 
-int main() {
-    FILE* fp = fopen("./examples/fizzbuzz.scm", "r");
+int main(int argc, char *argv[]) {
+    FILE *fp = NULL;
+
+    if ( argc != 2 ) {
+        printf( "usage: %s filename", argv[0] );
+    } else {
+        fp = fopen( argv[1], "r" );
+        if ( fp == 0 ) {
+            printf( "Could not open file\n" );
+        }
+    }
+
     char c = getc(fp);
     /* this input mode is terrible. */
     char* ugh = malloc(sizeof(char) * 10000);

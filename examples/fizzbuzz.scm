@@ -1,6 +1,6 @@
 (define fizzbuzz (lambda (x acc)
                 (cond
-                  ((eq x 100)
+                  ((eq x 101)
                    acc)
                   ((eq (% x 3) 0)
                    (cond
@@ -13,7 +13,4 @@
                   ((eq 1 1)
                    (fizzbuzz (+ x 1) (cons x acc))))))
 
-(define do-fizzbuzz (fizzbuzz 1 '()))
-
-(display
-  (do-fizzbuzz))
+(display (fizzbuzz 1 '()) '())

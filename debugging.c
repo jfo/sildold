@@ -32,17 +32,19 @@ void debuglistinner(cell* l, int depth) {
     }
 }
 
-void printlist(cell* l) {
-    if (l->type == LIST) {
-        printf("(");
-        printlist(l->value.list);
-        printlist(l->next);
-    } else if (l->type == LABEL) {
-        printf(" %s ", l->value.label);
-        if (l->next == &nil) {
-            printf(")");
-        }
-        printlist(l->next);
+void printlist(cell* l, int depth) {
+    if (l == &nil && depth > 0) {
+        printf(") ");
+    } else if (l->type == LIST) {
+        printf("( ");
+        printlist(l->value.list, depth + 1);
+        printlist(l->next, depth);
+    } else if (l->type == LABEL || l->type == BUILTIN) {
+        printf("%s ", l->value.label);
+        printlist(l->next, depth);
+    } else if (l->type == INT) {
+        printf("%i ", l->value.num);
+        printlist(l->next, depth);
     }
 }
 
