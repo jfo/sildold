@@ -57,32 +57,36 @@ cell* apply(cell *n, cell** dict) {
     cell* operator = n->value.list;
     cell* first_operand = n->value.list->next;
 
-    if (operator->value.builtin == ATOM) {
-        return atom(first_operand);
-    } else if (operator->value.builtin == EQ)  {
-        return eq(first_operand);
-    } else if (operator->value.builtin == CAR)  {
-        return car(first_operand);
-    } else if (operator->value.builtin == CDR)  {
-        return cdr(first_operand);
-    } else if (operator->value.builtin == CONS)  {
-        return cons(first_operand);
-    } else if (operator->value.builtin == ADD)  {
-        return add(first_operand);
-    } else if (operator->value.builtin == SUB)  {
-        return subtract(first_operand);
-    } else if (operator->value.builtin == MUL)  {
-        return mult(first_operand);
-    } else if (operator->value.builtin == DIV)  {
-        return divide(first_operand);
-    } else if (operator->value.builtin == MOD)  {
-        return modulo(first_operand);
-    } else if (operator->value.builtin == DISPLAY)  {
-        printlist(n->value.list->next, 0);
-    } else if (operator->value.builtin == QUOTE)  {
-        cell *out = quote(n->value.list->next);
-        out->next = eval(n->next, dict);
-        return out;
+    if (operator.type == BUILTIN) {
+        switch (operator->value.builtin) {
+            case ATOM:
+                return atom(first_operand);
+            case EQ:
+                return eq(first_operand);
+            case CAR:
+                return car(first_operand);
+            case CDR:
+                return cdr(first_operand);
+            case CONS:
+                return cons(first_operand);
+            case ADD:
+                return add(first_operand);
+            case SUB:
+                return subtract(first_operand);
+            case MUL:
+                return mult(first_operand);
+            case DIV:
+                return divide(first_operand);
+            case MOD:
+                return modulo(first_operand);
+            case DISPLAY:
+                printlist(n->value.list->next, 0);
+            case QUOTE: {
+                cell *out = quote(first_operand);
+                out->next = eval(n->next, dict);
+                return out;
+            }
+        }
     } else if (operator->type == LIST && operator->value.list->value.builtin ==  LAMBDA) {
         return lambda(n, *dict);
     } else if (operator->type == LIST) {

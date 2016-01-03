@@ -13,4 +13,4 @@
                   ((eq 1 1)
                    (fizzbuzz (+ x 1) (cons x acc))))))
 
-(display (fizzbuzz 1 '()) '())
+(display (fizzbuzz 1 '()))
