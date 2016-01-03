@@ -14,22 +14,22 @@ cell* eval(cell *c, cell** dict) {
         cell *out = c;
         out->next = eval(c->next, dict);
         return out;
-    } else if (c->type == LIST && strcmp(c->value.list->value.label, "lambda") == 0) {
+    } else if (c->type == LIST && c->value.list->value.builtin == LAMBDA) {
         return c;
-    } else if (c->type == LIST && strcmp(c->value.list->value.label, "quote") == 0) {
+    } else if (c->type == LIST && c->value.list->value.builtin == QUOTE) {
         cell *out = quote(c->value.list->next);
         out->next = eval(c->next, dict);
         return out;
-    } else if (c->type == LIST && strcmp(c->value.list->value.label, "define") == 0) {
+    } else if (c->type == LIST && c->value.list->value.builtin == DEFINE) {
         return define(c, dict);
-    } else if (c->type == LIST && strcmp(c->value.list->value.label, "cond") == 0) {
+    } else if (c->type == LIST && c->value.list->value.builtin == COND) {
         return cond(c->value.list->next, *dict);
     } else if (
             c->type == LIST
             &&
             c->value.list->type == LIST
             &&
-            strcmp(c->value.list->value.list->value.label, "lambda") == 0
+            c->value.list->value.list->value.builtin ==  LAMBDA
             ) {
         return lambda(c, *dict);
     } else if (c->type == LIST) {
@@ -57,33 +57,33 @@ cell* apply(cell *n, cell** dict) {
     cell* operator = n->value.list;
     cell* first_operand = n->value.list->next;
 
-    if (strcmp(operator->value.label, "atom") == 0) {
+    if (operator->value.builtin == ATOM) {
         return atom(first_operand);
-    } else if (strcmp(operator->value.label, "eq") == 0) {
+    } else if (operator->value.builtin == EQ)  {
         return eq(first_operand);
-    } else if (strcmp(operator->value.label, "car") == 0) {
+    } else if (operator->value.builtin == CAR)  {
         return car(first_operand);
-    } else if (strcmp(operator->value.label, "cdr") == 0) {
+    } else if (operator->value.builtin == CDR)  {
         return cdr(first_operand);
-    } else if (strcmp(operator->value.label, "cons") == 0) {
+    } else if (operator->value.builtin == CONS)  {
         return cons(first_operand);
-    } else if (strcmp(operator->value.label, "+") == 0) {
+    } else if (operator->value.builtin == ADD)  {
         return add(first_operand);
-    } else if (strcmp(operator->value.label, "-") == 0) {
+    } else if (operator->value.builtin == SUB)  {
         return subtract(first_operand);
-    } else if (strcmp(operator->value.label, "*") == 0) {
+    } else if (operator->value.builtin == MUL)  {
         return mult(first_operand);
-    } else if (strcmp(operator->value.label, "/") == 0) {
+    } else if (operator->value.builtin == DIV)  {
         return divide(first_operand);
-    } else if (strcmp(operator->value.label, "%") == 0) {
+    } else if (operator->value.builtin == MOD)  {
         return modulo(first_operand);
-    } else if (strcmp(operator->value.label, "display") == 0) {
+    } else if (operator->value.builtin == DISPLAY)  {
         printlist(n->value.list->next, 0);
-    } else if (strcmp(operator->value.label, "quote") == 0) {
+    } else if (operator->value.builtin == QUOTE)  {
         cell *out = quote(n->value.list->next);
         out->next = eval(n->next, dict);
         return out;
-    } else if (operator->type == LIST && strcmp(operator->value.list->value.label, "lambda") == 0) {
+    } else if (operator->type == LIST && operator->value.list->value.builtin ==  LAMBDA) {
         return lambda(n, *dict);
     } else if (operator->type == LIST) {
         return eval(operator, dict);
@@ -97,17 +97,18 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main(int argc, char *argv[]) {
-    FILE *fp = NULL;
+    /* FILE *fp = NULL; */
 
-    if ( argc != 2 ) {
-        printf( "usage: %s filename", argv[0] );
-    } else {
-        fp = fopen( argv[1], "r" );
-        if ( fp == 0 ) {
-            printf( "Could not open file\n" );
-        }
-    }
+    /* if ( argc != 2 ) { */
+    /*     printf( "usage: %s filename", argv[0] ); */
+    /* } else { */
+    /*     fp = fopen( argv[1], "r" ); */
+    /*     if ( fp == 0 ) { */
+    /*         printf( "Could not open file\n" ); */
+    /*     } */
+    /* } */
 
+    FILE *fp = fopen("examples/fizzbuzz.scm", "r");
     char c = getc(fp);
     /* this input mode is terrible. */
     char* ugh = malloc(sizeof(char) * 10000);

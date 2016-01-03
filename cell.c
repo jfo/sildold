@@ -6,6 +6,7 @@ enum { NIL, LABEL, LIST, BUILTIN, INT };
 typedef union value {
     char * label;
     int num;
+    int builtin;
     struct cell * list;
 } value;
 

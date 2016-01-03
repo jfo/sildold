@@ -9,6 +9,24 @@ int count_substring_length(char* s) {
 
 
 const int builtins_len = 15;
+enum builtin_vals {
+    MUL,
+    ADD,
+    SUB,
+    DIV,
+    MOD,
+    EQ,
+    QUOTE,
+    LAMBDA,
+    COND,
+    ATOM,
+    CAR,
+    CDR,
+    CONS,
+    DISPLAY,
+    DEFINE
+};
+typedef enum builtin_vals builtin_vals;
 const char * builtins[] = {
     "*",
     "+",
@@ -30,7 +48,7 @@ const char * builtins[] = {
 int isbuiltin(char* input) {
     for (int i = 0; i < builtins_len; i++) {
         if (!strcmp(input, builtins[i])) {
-            return 1;
+            return i + 1;
         }
     };
     return 0;
@@ -74,8 +92,10 @@ int to_i(char* input) {
 
 
 cell* categorize(char* c) {
-    if (isbuiltin(c)) {
-        return makecell(BUILTIN, (value){.label=c}, &nil);
+    int builtinval = isbuiltin(c);
+    if (builtinval) {
+        int cell_value = (builtin_vals)builtinval - 1;
+        return makecell(BUILTIN, (value){.builtin=cell_value}, &nil);
     } else if (isint(c)) {
         return makecell(INT, (value){.num=to_i(c)}, &nil);
     } else {
@@ -101,7 +121,7 @@ cell * read(char** s, int depth) {
         return read(s, depth);
     } else if (*s[0] == '\'') {
         *s += 1;
-        cell *quote = makecell(LABEL, (value){.label = "quote"}, read(s, 0));
+        cell *quote = makecell(LABEL, (value){.builtin = QUOTE}, read(s, 0));
         cell* next = ((depth > 0) ? read(s, depth) : &nil);
         return makecell(LIST, (value){.list = quote}, next);
     } else if (*s[0] == '(') {
