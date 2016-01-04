@@ -8,7 +8,7 @@ int count_substring_length(char* s) {
 }
 
 
-const int builtins_len = 15;
+const int builtins_len = 16;
 enum builtin_vals {
     MUL,
     ADD,
@@ -24,6 +24,7 @@ enum builtin_vals {
     CDR,
     CONS,
     DISPLAY,
+    DEBUG,
     DEFINE
 };
 typedef enum builtin_vals builtin_vals;
@@ -42,6 +43,7 @@ const char * builtins[] = {
     "cdr",
     "cons",
     "display",
+    "debug",
     "define",
 };
 

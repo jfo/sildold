@@ -82,6 +82,9 @@ cell* apply(cell *n, cell** dict) {
             case DISPLAY:
                 printlist(n->value.list->next, 0);
                 printf("\n");
+            case DEBUG:
+                debuglist(n->value.list->next);
+                printf("\n");
             case QUOTE: {
                 cell *out = quote(first_operand);
                 out->next = eval(n->next, dict);

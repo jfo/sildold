@@ -23,7 +23,7 @@ void debuglistinner(cell* l, int depth) {
         debuglistinner(l->next, depth);
     } else if (l->type == BUILTIN) {
         printtabs(depth);
-        printf("BUILTIN: addr:%p, value=%s, next_item=%p  \n", l, l->value.label, l->next);
+        printf("BUILTIN: addr:%p, value=%s, next_item=%p  \n", l, builtins[l->value.builtin], l->next);
         debuglistinner(l->next, depth);
     } else if (l->type == INT) {
         printtabs(depth);
@@ -39,7 +39,10 @@ void printlist(cell* l, int depth) {
         printf("( ");
         printlist(l->value.list, depth + 1);
         printlist(l->next, depth);
-    } else if (l->type == LABEL || l->type == BUILTIN) {
+    } else if (l->type == BUILTIN) {
+        printf("%s ", builtins[l->value.builtin]);
+        printlist(l->next, depth);
+    } else if (l->type == LABEL) {
         printf("%s ", l->value.label);
         printlist(l->next, depth);
     } else if (l->type == INT) {

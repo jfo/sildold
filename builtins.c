@@ -7,7 +7,7 @@ cell* copy_cell(cell* n) {
     } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, copy_cell(n->next));
     } else if (n->type == BUILTIN) {
-        return makecell(BUILTIN, (value){.label=n->value.label}, copy_cell(n->next));
+        return makecell(BUILTIN, (value){.builtin=n->value.builtin}, copy_cell(n->next));
     } else if (n->type == INT) {
         return makecell(INT, (value){.num=n->value.num}, copy_cell(n->next));
     } else {
@@ -21,7 +21,7 @@ cell* copy_single_cell(cell* n) {
     } else if (n->type == LABEL) {
         return makecell(LABEL, (value){.label=n->value.label}, &nil);
     } else if (n->type == BUILTIN) {
-        return makecell(BUILTIN, (value){.label=n->value.label}, &nil);
+        return makecell(BUILTIN, (value){.builtin=n->value.builtin}, &nil);
     } else if (n->type == INT) {
         return makecell(INT, (value){.num=n->value.num}, &nil);
     }

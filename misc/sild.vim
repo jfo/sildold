@@ -1,6 +1,6 @@
 syn match sildMath "[\*|\-|\/|\%|\+]"
 syn keyword sildBuiltin eq quote  cond atom car cdr cons
-syn keyword sildSpecial display define
+syn keyword sildSpecial display define debug
 syn keyword sildLambda lambda
 syn match sildComment ";.*$"
 syn match sildQuote "\'"

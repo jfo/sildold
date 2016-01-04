@@ -18,7 +18,7 @@
   (lambda (l acc)
     (cond
       ((null? l) acc)
-      ((eq '() '()) (reverser (cdr l) (cons (car l) acc))))))
+      (else (reverser (cdr l) (cons (car l) acc))))))
 
 (display
   (reverser '(1 2 3 4) '())
