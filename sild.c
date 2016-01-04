@@ -81,6 +81,7 @@ cell* apply(cell *n, cell** dict) {
                 return modulo(first_operand);
             case DISPLAY:
                 printlist(n->value.list->next, 0);
+                printf("\n");
             case QUOTE: {
                 cell *out = quote(first_operand);
                 out->next = eval(n->next, dict);
@@ -101,18 +102,17 @@ cell* apply(cell *n, cell** dict) {
 }
 
 int main(int argc, char *argv[]) {
-    /* FILE *fp = NULL; */
+    FILE *fp = NULL;
 
-    /* if ( argc != 2 ) { */
-    /*     printf( "usage: %s filename", argv[0] ); */
-    /* } else { */
-    /*     fp = fopen( argv[1], "r" ); */
-    /*     if ( fp == 0 ) { */
-    /*         printf( "Could not open file\n" ); */
-    /*     } */
-    /* } */
+    if ( argc != 2 ) {
+        printf( "usage: %s filename", argv[0] );
+    } else {
+        fp = fopen( argv[1], "r" );
+        if ( fp == 0 ) {
+            printf( "Could not open file\n" );
+        }
+    }
 
-    FILE *fp = fopen("examples/fizzbuzz.scm", "r");
     char c = getc(fp);
     /* this input mode is terrible. */
     char* ugh = malloc(sizeof(char) * 10000);

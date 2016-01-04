@@ -1,5 +1,9 @@
 (display
-
-   (cdr (cdr (car (cdr '(this that)))))
-
+   (cdr(cdr '(this that))))
 )
+
+(define square
+  (lambda (x) (* x x))
+)
+
+(display (square 8))

@@ -50,7 +50,7 @@
 ; (display (cdr )) ; returns NIL should throw error
 ; (display (cdr '2)) ; returns NIL should throw error
 ; (display (cdr '(2 3)))
-; (display (cdr '(2 3) '1)) ; returns NIL should throw error
+(display (cdr '(2 3) '1)) ; returns NIL should throw error
 
 ; (display (quote '1))
 ; (display (quote 1))
@@ -58,6 +58,6 @@
 ; (display (quote))
 ; (display (quote '1 '2))
 
-(display ((lambda (x) '(x)) 10))
+(display ((lambda (x) (x)) 10))
 ; (display ((lambda (x) x) '1))
 
