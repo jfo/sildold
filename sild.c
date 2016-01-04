@@ -57,7 +57,7 @@ cell* apply(cell *n, cell** dict) {
     cell* operator = n->value.list;
     cell* first_operand = n->value.list->next;
 
-    if (operator.type == BUILTIN) {
+    if (operator->type == BUILTIN) {
         switch (operator->value.builtin) {
             case ATOM:
                 return atom(first_operand);
