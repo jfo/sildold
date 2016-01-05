@@ -81,10 +81,10 @@ cell* apply(cell *n, cell** dict) {
                 return modulo(first_operand);
             case DISPLAY:
                 printlist(n->value.list->next, 0);
-                printf("\n");
+                return &nil;
             case DEBUG:
                 debuglist(n->value.list->next);
-                printf("\n");
+                return &nil;
             case QUOTE: {
                 cell *out = quote(first_operand);
                 out->next = eval(n->next, dict);
