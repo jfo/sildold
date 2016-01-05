@@ -1,9 +1,14 @@
-(display
-   (car (cdr '(this that))))
-)
+; (display
+;    (car (cdr '(this that))))
+; )
+
+(define twice
+ (lambda (x func)
+  (func (func x))))
 
 (define square
   (lambda (x) (* x x))
 )
 
-(debug '(lambda 8))
+(display (square 2))
+(display (twice 2 square))

@@ -5,6 +5,7 @@
                 (cond ((eq x (car l)) (cadr l))
                       ((eq '() '()) (thing x (cdr l))))))
 
+; this doesn't work yet because of deep copying in the interpreter
 (define else (eq '()'()))
 ; (debug else)
 ; (debug else)
@@ -33,11 +34,7 @@
       ((eq '() '()) (reverser (cdr l) (cons (car l) acc))))))
 
 (display
-  (eq '() '())
-)
-
-(display
-  (eq '(1 2 3 4) (reverser (reverser '(1 2 3 4) '()) '()))
+  (reverser '(1 2 3 4) '())
 )
 
 (define assoc
